@@ -19,7 +19,7 @@
 # the following rules:
 #   use $(VAR) not ${VAR}
 
-prefix          = /home/urse-123/Desktop/os/bochs
+prefix          = /home/urse-123/Desktop/GGBOS/bochs-gdb
 exec_prefix     = ${prefix}
 srcdir          = .
 
@@ -85,8 +85,8 @@ SHELL = /bin/bash
 
 CC = gcc
 CXX = g++
-CFLAGS = -g -O2 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES   $(X_CFLAGS) $(MCH_CFLAGS) $(FLA_FLAGS)  -DBX_SHARE_PATH='"$(sharedir)"'
-CXXFLAGS = -g -O2 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES   $(X_CFLAGS) $(MCH_CFLAGS) $(FLA_FLAGS)  -DBX_SHARE_PATH='"$(sharedir)"'
+CFLAGS = -g -O2 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES  $(X_CFLAGS) $(MCH_CFLAGS) $(FLA_FLAGS)  -DBX_SHARE_PATH='"$(sharedir)"'
+CXXFLAGS = -g -O2 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES  $(X_CFLAGS) $(MCH_CFLAGS) $(FLA_FLAGS)  -DBX_SHARE_PATH='"$(sharedir)"'
 
 LDFLAGS = -pthread
 LIBS = 
@@ -114,7 +114,7 @@ GUI_LINK_OPTS =  $(GUI_LINK_OPTS_X)
 DEVICE_LINK_OPTS = 
 RANLIB = ranlib
 
-CFLAGS_CONSOLE = -g -O2 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES  $(MCH_CFLAGS) $(FLA_FLAGS)
+CFLAGS_CONSOLE = -g -O2 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES $(MCH_CFLAGS) $(FLA_FLAGS)
 CXXFLAGS_CONSOLE = -g -O2 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES $(MCH_CFLAGS) $(FLA_FLAGS)
 BXIMAGE_LINK_OPTS = 
 
@@ -177,15 +177,15 @@ all: bochs  bximage
 
 
 bochs: iodev/libiodev.a iodev/display/libdisplay.a iodev/hdimage/libhdimage.a    \
-		$(DEBUGGER_LIB) cpu/libcpu.a  cpu/cpudb/libcpudb.a memory/libmemory.a \
+		 cpu/libcpu.a  cpu/cpudb/libcpudb.a memory/libmemory.a \
 		gui/libgui.a $(DISASM_LIB)  $(BX_OBJS) \
-		$(SIMX86_OBJS) $(FPU_LIB)  
+		$(SIMX86_OBJS) $(FPU_LIB) $(GDBSTUB_OBJS) 
 	$(LIBTOOL) --mode=link --tag CXX $(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) -export-dynamic $(BX_OBJS) $(SIMX86_OBJS) \
 		iodev/libiodev.a iodev/display/libdisplay.a iodev/hdimage/libhdimage.a    \
-		$(DEBUGGER_LIB) cpu/libcpu.a  cpu/cpudb/libcpudb.a \
+		 cpu/libcpu.a  cpu/cpudb/libcpudb.a \
 		 memory/libmemory.a gui/libgui.a \
 		$(DISASM_LIB)   \
-		 $(FPU_LIB) \
+		$(GDBSTUB_OBJS) $(FPU_LIB) \
 		$(GUI_LINK_OPTS) \
 		$(DEVICE_LINK_OPTS) \
 		$(MCH_LINK_FLAGS) \
@@ -198,23 +198,23 @@ bochs: iodev/libiodev.a iodev/display/libdisplay.a iodev/hdimage/libhdimage.a   
 # libtool.  This creates a .DEF file, and exports file, an import library,
 # and then links bochs.exe with the exports file.
 .win32_dll_plugin_target: iodev/libiodev.a iodev/display/libdisplay.a iodev/hdimage/libhdimage.a   \
-		 $(DEBUGGER_LIB) cpu/libcpu.a  cpu/cpudb/libcpudb.a \
+		  cpu/libcpu.a  cpu/cpudb/libcpudb.a \
 		memory/libmemory.a gui/libgui.a $(DISASM_LIB)  \
-		$(BX_OBJS) $(SIMX86_OBJS) $(FPU_LIB)  
+		$(BX_OBJS) $(SIMX86_OBJS) $(FPU_LIB) $(GDBSTUB_OBJS) 
 	$(DLLTOOL) --export-all-symbols --output-def bochs.def \
 		$(BX_OBJS) $(SIMX86_OBJS) \
 		iodev/libiodev.a iodev/display/libdisplay.a iodev/hdimage/libhdimage.a    \
 		cpu/libcpu.a  cpu/cpudb/libcpudb.a memory/libmemory.a gui/libgui.a \
-		$(DEBUGGER_LIB) $(DISASM_LIB)   \
-		 $(FPU_LIB)
+		 $(DISASM_LIB)   \
+		$(GDBSTUB_OBJS) $(FPU_LIB)
 	$(DLLTOOL) --dllname bochs.exe --def bochs.def --output-lib dllexports.a
 	$(DLLTOOL) --dllname bochs.exe --output-exp bochs.exp --def bochs.def
 	$(CXX) -o bochs.exe $(CXXFLAGS) $(LDFLAGS) \
 	    $(BX_OBJS) bochs.exp $(SIMX86_OBJS) \
 		iodev/libiodev.a iodev/display/libdisplay.a iodev/hdimage/libhdimage.a    \
 		cpu/libcpu.a  cpu/cpudb/libcpudb.a memory/libmemory.a gui/libgui.a \
-		$(DEBUGGER_LIB) $(DISASM_LIB)   \
-		 $(FPU_LIB) \
+		 $(DISASM_LIB)   \
+		$(GDBSTUB_OBJS) $(FPU_LIB) \
 		$(GUI_LINK_OPTS) \
 		$(DEVICE_LINK_OPTS) \
 		$(MCH_LINK_FLAGS) \

@@ -7,7 +7,7 @@
 #
 ###################################################################
 
-prefix          = /home/urse-123/Desktop/os/bochs
+prefix          = /home/urse-123/Desktop/GGBOS/bochs-gdb
 srcdir          = .
 docdir          = $(prefix)/share/doc/bochs
 DOCBOOK2HTML = not_found

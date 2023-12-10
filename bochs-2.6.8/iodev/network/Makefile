@@ -19,7 +19,7 @@
 
 .SUFFIXES: .cc
 
-prefix          = /home/urse-123/Desktop/os/bochs
+prefix          = /home/urse-123/Desktop/GGBOS/bochs-gdb
 exec_prefix     = ${prefix}
 srcdir          = .
 
@@ -39,7 +39,7 @@ SHELL = /bin/bash
 
 
 CXX = g++
-CXXFLAGS = $(BX_INCDIRS) -g -O2 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES   $(X_CFLAGS)
+CXXFLAGS = $(BX_INCDIRS) -g -O2 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES  $(X_CFLAGS)
 
 LDFLAGS = -pthread
 LIBS = 

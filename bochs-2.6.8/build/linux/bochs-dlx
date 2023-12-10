@@ -1,6 +1,6 @@
 #!/bin/sh
-BOCHS=/home/urse-123/Desktop/os/bochs/bin/bochs
-DLXINST=/home/urse-123/Desktop/os/bochs/share/bochs/dlxlinux
+BOCHS=/home/urse-123/Desktop/GGBOS/bochs-gdb/bin/bochs
+DLXINST=/home/urse-123/Desktop/GGBOS/bochs-gdb/share/bochs/dlxlinux
 GZIP=/usr/bin/gzip
 if [ ! -z $1 ]; then
   DLXPATH=$1
